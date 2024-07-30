@@ -1,5 +1,6 @@
 from settings import *
 from level import Level
+from pytmx.util_pygame import load_pygame
 
 # This class is going to run the basic logic
 class Game:

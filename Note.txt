@@ -1,0 +1,15 @@
+Kings and Pids: Gói assets nhiều cái có thể dùng được, ví dụ như máu và phông chữ, có thể tạo 1 level riêng với gói asset này
+Pixel Adventure: gói assets nền tảng sử dụng, nhiều hiệu ứng hay 
+Các bước tạo game của Tech With Tim:
+- Game Setup
+- tạo background
+- Tạo player
+- di chuyển player
+- tạo gravity
+- Loading/splitting sprite sheets
+- animating the player
+- adding terrain/Blocks
+- tạo va chạm
+- nhảy và double jump
+- di chuyển background
+trong First Pygame Project, file hình ảnh và các thứ được bắt đầu từ file assets,suy ra phải đổi tên để dùng

@@ -11,7 +11,7 @@ class Game:
         pygame.display.set_caption("Adventure 1")
 
         self.current_stage = Level()
-    
+
     def run(self):
         """
         Creating the game loop

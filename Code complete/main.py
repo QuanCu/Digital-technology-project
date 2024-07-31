@@ -1,6 +1,7 @@
 from settings import *
 from level import Level
 from pytmx.util_pygame import load_pygame
+from os.path import join
 
 # This class is going to run the basic logic
 class Game:
@@ -11,7 +12,11 @@ class Game:
         #Name of the game
         pygame.display.set_caption("Adventure 1")
 
-        self.current_stage = Level()
+        # Creating the dictionary that store all the map file
+        # Passing through the path to tmx file in here that will later on
+        # Passing it through self.current_stage to draw
+        self.tmx_maps = {0: load_pygame(join('Data', 'first level.tmx'))}
+        self.current_stage = Level(self.tmx_maps[0])
 
     def run(self):
         """

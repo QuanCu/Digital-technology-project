@@ -10,6 +10,9 @@ class Level:
         #Every single sprite that create 
         # Will be inside of this group
         self.all_sprites = pygame.sprite.Group()
+        # Handle collision
+        # Contain all of the colliable sprites
+        self.collisions_sprites = pygame.sprite.Group()
         # Call the setup method to initialize the map
         self.setup(tmx_map)
 
@@ -29,14 +32,13 @@ class Level:
             # Create a new Sprite object for each tile in the 'Terrain' layer
             # (x, y) gives the position on the map, and surf is the surface image for the tile
             # The new Sprite is added to the all_sprites group for further handling and rendering
-            Sprite((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites)
+            Sprite((x * TILE_SIZE, y * TILE_SIZE), surf, (self.all_sprites, self.collisions_sprites))
 
         for obj in tmx_map.get_layer_by_name('Objects'):
             if obj.name == 'Player':
-                Player((obj.x, obj.y), self.all_sprites)
-                print(obj.x)
-                print(obj.y)
+                Player((obj.x, obj.y), self.all_sprites, self.collisions_sprites)
 
-    def run(self):
+    def run(self, dt):
+        self.all_sprites.update(dt)
         self.display_surface.fill('black')
         self.all_sprites.draw(self.display_surface)

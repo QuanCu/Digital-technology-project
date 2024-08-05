@@ -522,7 +522,8 @@ def main(window):
     run = True
     while run:
         #Ensuring that our while loop is run at 60 frames per second
-        clock.tick(FPS)
+        dt = clock.tick(FPS)
+        print(dt)
 
         for event in pygame.event.get():
             #Check if the user quit the game

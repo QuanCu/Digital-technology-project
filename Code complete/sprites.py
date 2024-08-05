@@ -23,3 +23,4 @@ class Sprite(pygame.sprite.Sprite):
         self.image.fill('white')
         #Positioning the sprite
         self.rect = self.image.get_frect(topleft = pos)
+        self.old_rect = self.rect.copy()

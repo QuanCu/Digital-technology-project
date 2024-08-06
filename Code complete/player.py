@@ -124,6 +124,36 @@ class Player(pygame.sprite.Sprite):
             self.on_surface['floor'] = True
         else:
             self.on_surface['floor'] = False
+        
+        # Calculate the position for the right-side collision detection rectangle
+        # The rectangle is placed at the top-right corner of the player's main rectangle (self.rect)
+        # It is offset vertically by a quarter of the height of the player's rectangle (self.rect.height / 4)
+        # This offset ensures that the collision rectangle is centered vertically on the right side of the player
+
+        # The size of the collision rectangle is set to a small width (2 pixels) and half the height of the player's rectangle
+        # This narrow rectangle is used to detect collisions with objects to the right of the player
+
+        right_rect_position = self.rect.topright + vector(0, self.rect.height / 4)
+        right_rect_size = (2, self.rect.height / 2)
+
+        # Create the right-side collision detection rectangle using the calculated position and size
+        right_rect = pygame.Rect(right_rect_position, right_rect_size)
+
+        # Calculate the position for the left-side collision detection rectangle
+        # The rectangle is placed at the top-left corner of the player's main rectangle (self.rect)
+        # It is offset vertically by a quarter of the height of the player's rectangle (self.rect.height / 4)
+        # This offset ensures that the collision rectangle is centered vertically on the left side of the player
+
+        # The size of the collision rectangle is set to a small width (2 pixels) and half the height of the player's rectangle
+        # This narrow rectangle is used to detect collisions with objects to the left of the player
+
+        left_rect_position = self.rect.topleft + vector(0, self.rect.height / 4)
+        left_rect_size = (-2, self.rect.height / 2)
+
+        # Create the left-side collision detection rectangle using the calculated position and size
+        left_rect = pygame.Rect(left_rect_position, left_rect_size)
+
+
 
     def collision(self,axis):
         """

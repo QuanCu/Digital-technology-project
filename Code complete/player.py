@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 800
         # Jumping
         self.jump = False
-        self.jump_height = 200
+        self.jump_height = 800
 
         #Collision
         self.collision_sprites = collision_sprites
@@ -92,16 +92,34 @@ class Player(pygame.sprite.Sprite):
         self.collision('verticle')
 
         # Checking for jumping
+        # If the player is on the surface, aloud it to jump
         if self.jump:
-            self.direction.y = -self.jump_height
-            self.jump = False
+            if self.on_surface['floor']:
+                self.direction.y = -self.jump_height
+                self.jump = False
+        
+    def check_contact(self):
+        """
+        Checking if the player is having contact with the floor
+        """
+        # Creating 3 rect in 3 side of the player,
+        # If the rect of the sprites is contact with the rect
+        # Of the player, player will know which side have contact
+        floor_rect = pygame.Rect((self.rect.bottomleft),(self.rect.width,2))
+        # List of colliding objects that could be colliding with
+        collide_rects = [sprite.rect for sprite in self.collision_sprites]
+        # Check if the player's collision rectangle is touching any of the floor rectangles
+        if floor_rect.collidelist(collide_rects) >= 0:
+            self.on_surface['floor'] = True
+        else:
+            self.on_surface['floor'] = False
 
     def collision(self,axis):
         """
         Checking if collision
 
         Args:
-            axis (_type_): This axis could be horizontal or verticle
+            axis (str): This axis could be horizontal or verticle.
         """
         # Look at all of the sprites inside of collision
         # Cheking if there is an overlap
@@ -144,3 +162,4 @@ class Player(pygame.sprite.Sprite):
         self.old_rect = self.rect.copy()
         self.input()
         self.move(dt)
+        self.check_contact()

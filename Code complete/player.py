@@ -75,6 +75,7 @@ class Player(pygame.sprite.Sprite):
         # This helps simulate a more natural acceleration due to gravity over time.
         # The formula `gravity / 2 * dt` adjusts the velocity based on time elapsed (`dt`),
         # ensuring consistent behavior regardless of the frame rate.
+        # Fractional relationship graph
         self.direction.y += self.gravity / 2 * dt
 
         # Update the player's vertical position.
@@ -167,8 +168,6 @@ class Player(pygame.sprite.Sprite):
         else:
             # If there is no collision, set 'left' to False
             self.on_surface['left'] = False
-
-
 
     def collision(self,axis):
         """

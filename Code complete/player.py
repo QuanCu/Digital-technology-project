@@ -28,6 +28,8 @@ class Player(pygame.sprite.Sprite):
         self.collision_sprites = collision_sprites
         self.on_surface = {'floor': False}
 
+        self.display_surface = pygame.display.get_surface()
+
 
     def input(self):
         # Locol variable 
@@ -119,17 +121,11 @@ class Player(pygame.sprite.Sprite):
         # List of colliding objects that could be colliding with
         for sprite in self.collision_sprites:
             collide_rects.append(sprite.rect)
-        # Check if the player's collision rectangle is touching any of the floor rectangles
-        if floor_rect.collidelist(collide_rects) >= 0:
-            self.on_surface['floor'] = True
-        else:
-            self.on_surface['floor'] = False
         
         # Calculate the position for the right-side collision detection rectangle
         # The rectangle is placed at the top-right corner of the player's main rectangle (self.rect)
         # It is offset vertically by a quarter of the height of the player's rectangle (self.rect.height / 4)
         # This offset ensures that the collision rectangle is centered vertically on the right side of the player
-
         # The size of the collision rectangle is set to a small width (2 pixels) and half the height of the player's rectangle
         # This narrow rectangle is used to detect collisions with objects to the right of the player
 
@@ -143,16 +139,25 @@ class Player(pygame.sprite.Sprite):
         # The rectangle is placed at the top-left corner of the player's main rectangle (self.rect)
         # It is offset vertically by a quarter of the height of the player's rectangle (self.rect.height / 4)
         # This offset ensures that the collision rectangle is centered vertically on the left side of the player
-
         # The size of the collision rectangle is set to a small width (2 pixels) and half the height of the player's rectangle
         # This narrow rectangle is used to detect collisions with objects to the left of the player
 
-        left_rect_position = self.rect.topleft + vector(0, self.rect.height / 4)
-        left_rect_size = (-2, self.rect.height / 2)
+        left_rect_position = self.rect.topleft + vector(-2, self.rect.height / 4)
+        left_rect_size = (2, self.rect.height / 2)
 
         # Create the left-side collision detection rectangle using the calculated position and size
         left_rect = pygame.Rect(left_rect_position, left_rect_size)
 
+        pygame.draw.rect(self.display_surface, 'yellow', floor_rect)
+        pygame.draw.rect(self.display_surface, 'yellow', right_rect)
+        pygame.draw.rect(self.display_surface, 'yellow', left_rect)
+
+
+        # Check if the player's collision rectangle is touching any of the floor rectangles
+        if floor_rect.collidelist(collide_rects) >= 0:
+            self.on_surface['floor'] = True
+        else:
+            self.on_surface['floor'] = False
 
 
     def collision(self,axis):

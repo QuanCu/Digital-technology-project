@@ -20,9 +20,13 @@ class Player(pygame.sprite.Sprite):
         self.speed = 200
         # Gravity
         self.gravity = 800
+        # Jumping
+        self.jump = False
+        self.jump_height = 200
 
         #Collision
         self.collision_sprites = collision_sprites
+        self.on_surface = {'floor': False}
 
 
     def input(self):
@@ -40,16 +44,15 @@ class Player(pygame.sprite.Sprite):
         # If the player is moving left
         elif keys[pygame.K_LEFT]:
             input_vector.x -= 1
-        elif keys[pygame.K_DOWN]:
-            input_vector.y += 1
-        elif keys[pygame.K_UP]:
-            input_vector.y -= 1
+
         # Changing the direction than normalize it to 
         # Make sure the vector is the same length
         # And ensuring that the speed is always the same
         self.direction.x = input_vector.normalize().x if input_vector else input_vector.x
             
-
+        # Check for jumping
+        if keys[pygame.K_SPACE]:
+            self.jump = True
 
     def move(self, dt):
         """
@@ -87,7 +90,11 @@ class Player(pygame.sprite.Sprite):
         # If a collision is detected, the player's position will be adjusted to prevent them
         # from moving through the object, effectively stopping the player from falling further.
         self.collision('verticle')
-        print(self.direction.y)
+
+        # Checking for jumping
+        if self.jump:
+            self.direction.y = -self.jump_height
+            self.jump = False
 
     def collision(self,axis):
         """
@@ -117,10 +124,11 @@ class Player(pygame.sprite.Sprite):
                     if self.rect.right >= sprite.rect.left and self.old_rect.right <= sprite.old_rect.left:
                         self.rect.right = sprite.rect.left
                 else: # Verticle collision
-                    if self.rect.bottom >= sprite.rect.top and self.old_rect.bottom <= sprite.old_rect.right:
-                        self.rect.bottom = sprite.rect.top
-                    if self.rect.top <= sprite.rect.bottom and self.old_rect.top >= sprite.old_rect.bottom:
+                    if self.rect.top <= sprite.rect.bottom and int(self.old_rect.top) >= int(sprite.old_rect.bottom):
                         self.rect.top = sprite.rect.bottom
+                    elif self.rect.bottom >= sprite.rect.top and int(self.old_rect.bottom) <= int(sprite.old_rect.top):
+                        self.rect.bottom = sprite.rect.top
+                    # Setting if having any verticle collision, setting the self.direction equal to 0
                     self.direction.y = 0
 
     def update(self, dt):

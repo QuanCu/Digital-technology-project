@@ -34,8 +34,14 @@ class Level:
             # The new Sprite is added to the all_sprites group for further handling and rendering
             Sprite((x * TILE_SIZE, y * TILE_SIZE), surf, (self.all_sprites, self.collisions_sprites))
 
+        # Loop through objects in the 'Objects' layer of the map
         for obj in tmx_map.get_layer_by_name('Objects'):
+            # Check if the current object is the Player start position
             if obj.name == 'Player':
+                # Create a new Player object at the specified position (obj.x, obj.y)
+                # obj.x and obj.y provide the pixel coordinates for the player's initial location
+                # The Player object is added to the all_sprites and collisions_sprites groups
+                # This allows the player to be rendered and to interact with other collidable objects
                 Player((obj.x, obj.y), self.all_sprites, self.collisions_sprites)
 
     def run(self, dt):

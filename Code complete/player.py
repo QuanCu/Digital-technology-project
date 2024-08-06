@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 800
         # Jumping
         self.jump = False
-        self.jump_height = 800
+        self.jump_height = 300
 
         #Collision
         self.collision_sprites = collision_sprites
@@ -48,7 +48,13 @@ class Player(pygame.sprite.Sprite):
         # Changing the direction than normalize it to 
         # Make sure the vector is the same length
         # And ensuring that the speed is always the same
-        self.direction.x = input_vector.normalize().x if input_vector else input_vector.x
+        # Check if the input vector is not zero
+        if input_vector:
+            # Normalize the input vector and set the x direction
+            self.direction.x = input_vector.normalize().x
+        else:
+            # If input vector is zero, directly assign its x component
+            self.direction.x = input_vector.x
             
         # Check for jumping
         if keys[pygame.K_SPACE]:
@@ -96,18 +102,23 @@ class Player(pygame.sprite.Sprite):
         if self.jump:
             if self.on_surface['floor']:
                 self.direction.y = -self.jump_height
-                self.jump = False
+            self.jump = False
         
     def check_contact(self):
         """
         Checking if the player is having contact with the floor
         """
+        # List of colliding objects that could be colliding with
+        collide_rects = []
         # Creating 3 rect in 3 side of the player,
         # If the rect of the sprites is contact with the rect
         # Of the player, player will know which side have contact
+        # Creating 2 tuples, the first one is the positsion which is bottom left
+        # The second one is the width and height of that rect
         floor_rect = pygame.Rect((self.rect.bottomleft),(self.rect.width,2))
         # List of colliding objects that could be colliding with
-        collide_rects = [sprite.rect for sprite in self.collision_sprites]
+        for sprite in self.collision_sprites:
+            collide_rects.append(sprite.rect)
         # Check if the player's collision rectangle is touching any of the floor rectangles
         if floor_rect.collidelist(collide_rects) >= 0:
             self.on_surface['floor'] = True

@@ -53,6 +53,8 @@ class MovingSprite(Sprite):
         self.speed = speed
 
         # Movement
+        # Naming it so can be use in player.py without getting other elements
+        self.moving = True
         # Determine the direction of movement based on the specified axis.
         if move_direction == 'x':
             # If the direction is 'x', the sprite will move horizontally.

@@ -1,7 +1,7 @@
 import pygame, sys
 from pygame.math import Vector2 as vector
 
-WINDOW_WIDTH, WINDOW_HEIGHT = 1400, 1000
+WINDOW_WIDTH, WINDOW_HEIGHT = 800,600
 TILE_SIZE = 64
 ANIMATION_SPEED = 6
 FPS = 60

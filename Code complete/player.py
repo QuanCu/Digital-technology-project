@@ -26,7 +26,8 @@ class Player(pygame.sprite.Sprite):
 
         #Collision
         self.collision_sprites = collision_sprites
-        self.on_surface = {'floor': False}
+        self.on_surface = {'floor': False, 'left': False, 'right': False}
+        self.platform = None
 
 
     def input(self):
@@ -103,7 +104,15 @@ class Player(pygame.sprite.Sprite):
         if self.jump:
             if self.on_surface['floor']:
                 self.direction.y = -self.jump_height
+                self.rect.bottom -= 1
             self.jump = False
+
+    def platform_move(self, dt):
+        # If the player is standing on a platform, the player will be moving
+        # In the direction of a platform at the speed of the platform
+        # At the current frame rate
+        if self.platform:
+            self.rect.topleft += self.platform.direction * self.platform.speed * dt
         
     def check_contact(self):
         """
@@ -168,6 +177,13 @@ class Player(pygame.sprite.Sprite):
         else:
             # If there is no collision, set 'left' to False
             self.on_surface['left'] = False
+        
+        #Checking if the player is in the moving platforms
+        self.platform = None
+        for sprite in [sprite for sprite in self.collision_sprites.sprites() if hasattr(sprite,'moving')]:
+            if sprite.rect.colliderect(floor_rect):
+                self.platform = sprite
+
 
     def collision(self,axis):
         """
@@ -217,4 +233,5 @@ class Player(pygame.sprite.Sprite):
         self.old_rect = self.rect.copy()
         self.input()
         self.move(dt)
+        self.platform_move(dt)
         self.check_contact()

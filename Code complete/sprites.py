@@ -37,3 +37,30 @@ class MovingSprite(Sprite):
     def __init__(self, groups, start_pos, end_pos, move_direction, speed):
         surf = pygame.Surface((200, 50))
         super().__init__(start_pos, surf, groups)
+        # Set the sprite's initial position to the center of the rectangle.
+        self.rect.center = start_pos
+        
+        # Store the start and end positions for the sprite's movement.
+        self.start_pos = start_pos
+        self.end_pos = end_pos
+        
+        # Store the speed at which the sprite will move.
+        self.speed = speed
+
+        # Movement
+        if move_direction == 'x':
+            self.direction = vector(1,0)
+        else:
+            self.direction = vector(0,1)
+
+        self.move_direction = move_direction
+
+    def update(self, dt):
+        """
+        Updating the position
+
+        Args:
+            dt (_type_): _description_
+        """
+        self.old_rect = self.rect.copy()
+        self.rect.topleft += self.direction * self.speed * dt

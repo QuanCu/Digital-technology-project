@@ -37,6 +37,11 @@ class MovingSprite(Sprite):
     def __init__(self, groups, start_pos, end_pos, move_direction, speed):
         surf = pygame.Surface((200, 50))
         super().__init__(start_pos, surf, groups)
+        # Setting up the position of the top-bottom of moving object to the top point
+        if move_direction==  'x':
+            self.rect.midleft = start_pos
+        else:
+            self.rect.midtop = start_pos 
         # Set the sprite's initial position to the center of the rectangle.
         self.rect.center = start_pos
         
@@ -48,19 +53,58 @@ class MovingSprite(Sprite):
         self.speed = speed
 
         # Movement
+        # Determine the direction of movement based on the specified axis.
         if move_direction == 'x':
-            self.direction = vector(1,0)
+            # If the direction is 'x', the sprite will move horizontally.
+            self.direction = vector(1, 0)  # Move right.
         else:
-            self.direction = vector(0,1)
+            # If the direction is not 'x', the sprite will move vertically.
+            self.direction = vector(0, 1)  # Move down.
 
         self.move_direction = move_direction
+    
+    def check_border(self):
+        # Check if the sprite has reached the border in the horizontal direction (left to right movement).
+        if self.move_direction == 'x':
+            # If the sprite's right edge has reached or exceeded the end position's x-coordinate
+            # and the sprite is currently moving to the right (direction.x == 1).
+            if self.rect.right >= self.end_pos[0] and self.direction.x == 1:
+                # Reverse the horizontal direction of movement (change from moving right to moving left).
+                self.direction.x = -1
+                # Adjust the sprite's right edge to exactly match the end position's x-coordinate.
+                self.rect.right = self.end_pos[0]
+            if self.rect.left <= self.start_pos[0] and self.direction.x == -1:
+                # Reverse the horizontal direction of movement (change from moving right to moving left).
+                self.direction.x = 1
+                # Adjust the sprite's right edge to exactly match the end position's x-coordinate.
+                self.rect.left = self.start_pos[0]
+        else:
+            # If the sprite's right edge has reached or exceeded the end position's x-coordinate
+            # and the sprite is currently moving to the right (direction.x == 1).
+            if self.rect.bottom >= self.end_pos[1] and self.direction.y == 1:
+                # Reverse the horizontal direction of movement (change from moving right to moving left).
+                self.direction.y = -1
+                # Adjust the sprite's right edge to exactly match the end position's x-coordinate.
+                self.rect.bottom = self.end_pos[1]
+            if self.rect.top <= self.start_pos[1] and self.direction.y == -1:
+                # Reverse the horizontal direction of movement (change from moving right to moving left).
+                self.direction.y = 1
+                # Adjust the sprite's right edge to exactly match the end position's x-coordinate.
+                self.rect.top = self.start_pos[1]
+
+
 
     def update(self, dt):
         """
         Updating the position
 
         Args:
-            dt (_type_): _description_
+            dt (_type_): The time that making the game looks smoother
         """
+        # Save the current position of the sprite's rectangle for future reference.
         self.old_rect = self.rect.copy()
+        
+        # Update the sprite's position by moving it in the specified direction.
+        # The position is adjusted based on the direction vector, speed, and delta time.
         self.rect.topleft += self.direction * self.speed * dt
+        self.check_border()

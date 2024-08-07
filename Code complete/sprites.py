@@ -8,19 +8,29 @@ class Sprite(pygame.sprite.Sprite):
         Displaying sprites
 
         Args:
-            pos (_type_): position that we want to passing the sprite on
-            surf (_type_): Surface that putting the sprite in
-            groups (_type_): putting the sprites in groups and the groups are displaying
+            pos (tuple): The (x, y) position where the sprite will be placed on the screen.
+            surf (pygame.Surface): The Surface where the sprite will be drawn.
+            groups (list): A list of groups that this sprite should be added to. 
         """
         super().__init__(groups)
         """
-        Assigning sprites into groups when creating it
+        The superclass (pygame.sprite.Sprite) constructor is called to initialize the sprite and add it to the specified groups.
         """
-        # The image is what wnat to display
-        # TIle size is 64 as in the setting file
+
+        # Create a Surface for the sprite. The size of the sprite is based on a TILE_SIZE constant (usually 64x64 pixels).
         self.image = pygame.Surface((TILE_SIZE, TILE_SIZE))
-        # Just to see if using the right size
+        
+        # Fill the sprite's surface with white color for visibility (useful for debugging or initial testing).
         self.image.fill('white')
-        #Positioning the sprite
-        self.rect = self.image.get_frect(topleft = pos)
+        
+        # Position the sprite on the screen using a rectangle. The top-left corner of the sprite is set to the given position (pos).
+        self.rect = self.image.get_rect(topleft=pos)
+        
+        # Make a copy of the sprite's rectangle to store its previous position. This is useful for tracking movement or collisions.
         self.old_rect = self.rect.copy()
+
+#Parameter are inherited from the class Sprite
+# Super init use to call the def __init__ of class Sprite
+class MovingSprite(Sprite):
+    def __init__(self, groups, start_pos, end_pos, move_direction, speed):
+        super().__init__(start_pos, surf, groups)

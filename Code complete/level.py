@@ -51,10 +51,47 @@ class Level:
         for obj in tmx_map.get_layer_by_name('Moving Objects2'):
             # Later on there will be a lots of object so separate it with if statement
             if obj.name == 'helicopter':
-                print(obj.width)
-                print(obj.height)
-                print(obj.x)
-                print(obj.y)
+                # Becasue the objects is moving left and right
+                # So need to figuring out which way is that objects moving
+                # Figure out by using the rect that in tiled is wider than it is tall
+                if obj.width > obj.height: #horizontal movement
+                    move_direction = 'x'
+                    # Calculate the starting position of the object:
+                    # The x-coordinate is the leftmost point of the object (obj.x).
+                    # The y-coordinate is the middle of the object's height (obj.y + obj.height / 2).
+                    start_pos = (
+                        obj.x,                   # x-coordinate: leftmost point
+                        obj.y + obj.height / 2   # y-coordinate: middle of the object's height
+                    )
+                    
+                    # Calculate the ending position of the object:
+                    # The x-coordinate is the rightmost point of the object (obj.x + obj.width).
+                    # The y-coordinate remains the same as the starting position (obj.y + obj.height / 2).
+                    end_pos = (
+                        obj.x + obj.width,       # x-coordinate: rightmost point
+                        obj.y + obj.height / 2   # y-coordinate: middle of the object's height
+                    )
+                # Handle verticle movement
+                else: 
+                    move_direction = 'y'
+                    # Calculate the starting position of the object:
+                    # The x-coordinate is the leftmost point of the object (obj.x).
+                    # The y-coordinate is the middle of the object's height (obj.y + obj.height / 2).
+                    start_pos = (
+                        obj.x + obj.width / 2,                   # x-coordinate: middle of top point
+                        obj.y   # y-coordinate: middle of the object's height
+                    )
+                    
+                    # Calculate the ending position of the object:
+                    # The x-coordinate is the rightmost point of the object (obj.x + obj.width).
+                    # The y-coordinate remains the same as the starting position (obj.y + obj.height / 2).
+                    end_pos = (
+                        obj.x + obj.width / 2,   # x-coordinate: middle of top point
+                        obj.y + obj.height      # y-coordinate: middle of bottom point
+                    )
+                # How fast the moving objects gonna be
+                # Using the original speed that setting up in tiled which is 100
+                speed = obj.properties['speed']
 
     def run(self, dt):
         self.display_surface.fill('black')

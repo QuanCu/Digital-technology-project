@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 800
         # Jumping
         self.jump = False
-        self.jump_height = 300
+        self.jump_height = 500
 
         #Collision
         self.collision_sprites = collision_sprites

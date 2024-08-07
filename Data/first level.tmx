@@ -35,6 +35,6 @@
  </layer>
  <objectgroup id="3" name="Objects">
   <object id="1" name="static" gid="180" x="2366.3" y="254.407" width="82" height="98"/>
-  <object id="14" name="Player" gid="183" x="149.645" y="389.303" width="64" height="64"/>
+  <object id="14" name="Player" gid="183" x="129.684" y="369.342" width="64" height="64"/>
  </objectgroup>
 </map>

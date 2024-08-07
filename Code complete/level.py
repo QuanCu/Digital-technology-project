@@ -92,7 +92,8 @@ class Level:
                 # How fast the moving objects gonna be
                 # Using the original speed that setting up in tiled which is 100
                 speed = obj.properties['speed']
-                MovingSprite(self.all_sprites, start_pos, end_pos, move_direction, speed)
+                # Create a MovingObject instance with the calculated start and end positions, speed, and direction, interact with a player
+                MovingSprite((self.all_sprites, self.collisions_sprites), start_pos, end_pos, move_direction, speed)
 
     def run(self, dt):
         self.display_surface.fill('black')

@@ -23,6 +23,7 @@ class Level:
         Args:
             tmx_map (_type_): _description_
         """
+        # Tiles
         # Target one specific layer inside the map tield
         # Getting the Terrain layer first.
         # Loop through to getting the x, y, surface position
@@ -34,6 +35,7 @@ class Level:
             # The new Sprite is added to the all_sprites group for further handling and rendering
             Sprite((x * TILE_SIZE, y * TILE_SIZE), surf, (self.all_sprites, self.collisions_sprites))
 
+        # objects
         # Loop through objects in the 'Objects' layer of the map
         for obj in tmx_map.get_layer_by_name('Objects'):
             # Check if the current object is the Player start position
@@ -43,6 +45,16 @@ class Level:
                 # The Player object is added to the all_sprites and collisions_sprites groups
                 # This allows the player to be rendered and to interact with other collidable objects
                 Player((obj.x, obj.y), self.all_sprites, self.collisions_sprites)
+
+        # Moving objects
+        # Loop through objects in the 'Moving Objects' layer of the map
+        for obj in tmx_map.get_layer_by_name('Moving Objects2'):
+            # Later on there will be a lots of object so separate it with if statement
+            if obj.name == 'helicopter':
+                print(obj.width)
+                print(obj.height)
+                print(obj.x)
+                print(obj.y)
 
     def run(self, dt):
         self.display_surface.fill('black')

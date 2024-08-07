@@ -1,5 +1,5 @@
 from settings import *
-from sprites import Sprite
+from sprites import Sprite, MovingSprite
 from player import Player
 
 class Level:
@@ -92,6 +92,7 @@ class Level:
                 # How fast the moving objects gonna be
                 # Using the original speed that setting up in tiled which is 100
                 speed = obj.properties['speed']
+                MovingSprite(self.all_sprites, start_pos, end_pos, move_direction, speed)
 
     def run(self, dt):
         self.display_surface.fill('black')

@@ -18,7 +18,7 @@ class Game:
         # Passing through the path to tmx file in here that will later on
         # Passing it through self.current_stage to draw
         #Data\Second level.tmx 
-        self.tmx_maps = {0: load_pygame(join('Data', 'Second level.tmx'))}
+        self.tmx_maps = {0: load_pygame(join('Data', 'first level.tmx'))}
         self.current_stage = Level(self.tmx_maps[0])
 
     def run(self):

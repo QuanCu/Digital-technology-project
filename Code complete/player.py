@@ -69,27 +69,34 @@ class Player(pygame.sprite.Sprite):
         #Doing the horizontal collision
         self.rect.x += self.direction.x * self.speed * dt
         self.collision('horizontal')
+        
+        # Sliding function
+        # If the player is not in any of the surface, will sliding down.
+        if not self.on_surface['floor'] and any((self.on_surface['left'], self.on_surface['right'])):
+            self.direction.y = 0
+            self.rect.y += self.gravity / 10 * dt
 
-        #Doing the vertical collision
-        # Apply gravity to the player's vertical direction.
-        # The gravity value is split into two increments to smoothly increase the downward velocity.
-        # This helps simulate a more natural acceleration due to gravity over time.
-        # The formula `gravity / 2 * dt` adjusts the velocity based on time elapsed (`dt`),
-        # ensuring consistent behavior regardless of the frame rate.
-        # Fractional relationship graph
-        self.direction.y += self.gravity / 2 * dt
+        else:
+            #Doing the vertical collision
+            # Apply gravity to the player's vertical direction.
+            # The gravity value is split into two increments to smoothly increase the downward velocity.
+            # This helps simulate a more natural acceleration due to gravity over time.
+            # The formula `gravity / 2 * dt` adjusts the velocity based on time elapsed (`dt`),
+            # ensuring consistent behavior regardless of the frame rate.
+            # Fractional relationship graph
+            self.direction.y += self.gravity / 2 * dt
 
-        # Update the player's vertical position.
-        # The current vertical position (`self.rect.y`) is adjusted by the vertical velocity (`self.direction.y`).
-        # Multiplying by `dt` ensures that the movement is time-dependent,
-        # making it frame-rate independent (e.g., if dt is small, the movement is small).
-        self.rect.y += self.direction.y * dt
+            # Update the player's vertical position.
+            # The current vertical position (`self.rect.y`) is adjusted by the vertical velocity (`self.direction.y`).
+            # Multiplying by `dt` ensures that the movement is time-dependent,
+            # making it frame-rate independent (e.g., if dt is small, the movement is small).
+            self.rect.y += self.direction.y * dt
 
-        # Apply the second half of the gravity to the vertical direction.
-        # This additional gravity increment further increases the downward velocity,
-        # simulating continuous acceleration (falling faster over time).
-        # By splitting the gravity application into two parts, the fall speed increases more smoothly.
-        self.direction.y += self.gravity / 2 * dt
+            # Apply the second half of the gravity to the vertical direction.
+            # This additional gravity increment further increases the downward velocity,
+            # simulating continuous acceleration (falling faster over time).
+            # By splitting the gravity application into two parts, the fall speed increases more smoothly.
+            self.direction.y += self.gravity / 2 * dt
 
         # Perform vertical collision detection and response.
         # The `collision` method is called with the argument 'verticle' (should be 'vertical').
@@ -97,7 +104,6 @@ class Player(pygame.sprite.Sprite):
         # objects or tiles in the environment (e.g., the ground or platforms).
         # If a collision is detected, the player's position will be adjusted to prevent them
         # from moving through the object, effectively stopping the player from falling further.
-        self.collision('verticle')
 
         # Checking for jumping
         # If the player is on the surface, aloud it to jump
@@ -107,6 +113,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.bottom -= 1
             self.jump = False
 
+        self.collision('verticle')
     def platform_move(self, dt):
         # If the player is standing on a platform, the player will be moving
         # In the direction of a platform at the speed of the platform
@@ -161,7 +168,6 @@ class Player(pygame.sprite.Sprite):
             self.on_surface['floor'] = True
         else:
             self.on_surface['floor'] = False
-
         # Check if the right-side collision detection rectangle is colliding with any of the objects
         if right_rect.collidelist(collide_rects) >= 0:
             # If there is a collision, set 'right' to True
@@ -174,9 +180,11 @@ class Player(pygame.sprite.Sprite):
         if left_rect.collidelist(collide_rects) >= 0:
             # If there is a collision, set 'left' to True
             self.on_surface['left'] = True
+
         else:
             # If there is no collision, set 'left' to False
             self.on_surface['left'] = False
+
         
         #Checking if the player is in the moving platforms
         self.platform = None

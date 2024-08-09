@@ -48,7 +48,7 @@ class Level:
 
         # Moving objects
         # Loop through objects in the 'Moving Objects' layer of the map
-        for obj in tmx_map.get_layer_by_name('Moving Objects2'):
+        for obj in tmx_map.get_layer_by_name('Moving Objects'):
             # Later on there will be a lots of object so separate it with if statement
             if obj.name == 'helicopter':
                 # Becasue the objects is moving left and right

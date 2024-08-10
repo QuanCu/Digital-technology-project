@@ -60,6 +60,7 @@ class Player(pygame.sprite.Sprite):
         # Check for jumping
         if keys[pygame.K_SPACE]:
             self.jump = True
+            print(5//2)
 
     def move(self, dt):
         """
@@ -110,7 +111,12 @@ class Player(pygame.sprite.Sprite):
         if self.jump:
             if self.on_surface['floor']:
                 self.direction.y = -self.jump_height
-                self.rect.bottom -= 1
+            elif any((self.on_surface['left'], self.on_surface['right'])):
+                self.direction.y = -self.jump_height
+                if self.on_surface['left']:
+                    self.direction.x = 1
+                else:
+                    self.direction.x = -1
             self.jump = False
 
         self.collision('verticle')
